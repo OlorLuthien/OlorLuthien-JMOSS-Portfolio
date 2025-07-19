@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
 
-    <title>Jaime SK Moss Porfolio</title>
+    <title>Jaime SK Moss Portfolio</title>
 
     <link type="text/css" rel="stylesheet" href="lib/icomoon.css">
     <script type="text/javascript" src="lib/player-0.0.11.min.js"></script>
@@ -15,7 +15,6 @@
     <script type="text/javascript">
       window.resizeTo(screen.width, screen.height);
     </script>
-    
 
     <script id="__ENTRY__" type="application/json">
       {".js":["rise/70faba37.js"],".css":["sandbox/4adfab46.css"]}
@@ -39,7 +38,7 @@
                 link.onload = resolve
                 link.onerror = reject
                 link.rel = 'stylesheet'
-                link.href = 'lib/' + manifest['.css'][idx]
+                link.href = manifest['.css'][idx] // FIXED: removed 'lib/'
                 document.body.appendChild(link)
               }))
             }
@@ -51,7 +50,7 @@
                 var script = document.createElement('script')
                 script.onload = resolve
                 script.onerror = reject
-                script.src = 'lib/' + manifest['.js'][idx]
+                script.src = manifest['.js'][idx] // FIXED: removed 'lib/'
                 document.body.appendChild(script)
               }))
             }
@@ -63,8 +62,7 @@
         function deserialize(str) {
           const buffer = Uint8Array.from(atob(str), c => c.charCodeAt(0))
           const json = new TextDecoder().decode(buffer)
-          const result = JSON.parse(json)
-          return result
+          return JSON.parse(json)
         }
 
         function __loadEntry() {
@@ -76,19 +74,15 @@
           if (manifest[name] == null) throw new Error(`Missing manifest for remote entry "${name}".`)
           return loadModule(manifest[name])
         }
-        
+
         async function __loadJsonp(id, path) {
           try {
             return await new Promise((resolve, reject) => {
-              try {
-                jsonp[id] = resolve
-                const script = document.createElement('script')
-                script.onerror = reject
-                script.src = `./${path}`
-                document.head.appendChild(script)
-              } catch (err) {
-                reject(err)
-              }
+              jsonp[id] = resolve
+              const script = document.createElement('script')
+              script.onerror = reject
+              script.src = `./${path}`
+              document.head.appendChild(script)
             })
           } finally {
             delete jsonp[id]
@@ -125,38 +119,36 @@
   <body>
     <div id="app"></div>
     <script type="text/javascript">
-  (function(root) {
-    window.i18n = {"available":["en"],"default":"en"};
-    window.partnerContent = [];
+      (function(root) {
+        window.i18n = {"available":["en"],"default":"en"};
+        window.partnerContent = [];
 
-    function isExport() {
-      return true;
-    }
+        function isExport() {
+          return true;
+        }
 
-    function resolvePath(path) {
-      return ('assets/').concat(path);
-    }
+        function resolvePath(path) {
+          return ('assets/').concat(path);
+        }
 
-    function resolveFontPath(font) {
-      return ('lib/fonts/').concat(font.key.split('/').reverse()[0]);
-    }
+        function resolveFontPath(font) {
+          return ('lib/fonts/').concat(font.key.split('/').reverse()[0]);
+        }
 
-    function fetchAvailableLocales() {
-      return window.i18n
-    }
+        function fetchAvailableLocales() {
+          return window.i18n;
+        }
 
-    root.Runtime = {
-      fetch: window.__fetchCourse,
-      fetchAvailableLocales: fetchAvailableLocales,
-      isExport: isExport,
-      resolvePath: resolvePath,
-      resolveFontPath: resolveFontPath
-    };
-  }(window));
-</script>
+        root.Runtime = {
+          fetch: window.__fetchCourse,
+          fetchAvailableLocales: fetchAvailableLocales,
+          isExport: isExport,
+          resolvePath: resolvePath,
+          resolveFontPath: resolveFontPath
+        };
+      }(window));
+    </script>
 
-    
     <script>__loadEntry()</script>
-    
   </body>
 </html>
